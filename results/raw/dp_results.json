@@ -1,0 +1,874 @@
+[
+  {
+    "query": "count_by_age",
+    "epsilon": 0.1,
+    "sensitivity": 1,
+    "mae": 10.52826703479595,
+    "relative_error": 0.010339705632395425,
+    "results": [
+      {
+        "age_bucket": 10,
+        "cnt": 5164,
+        "cnt_noised": 5161.110908252256
+      },
+      {
+        "age_bucket": 20,
+        "cnt": 24696,
+        "cnt_noised": 24719.169742503575
+      },
+      {
+        "age_bucket": 30,
+        "cnt": 26455,
+        "cnt_noised": 26461.235985129853
+      },
+      {
+        "age_bucket": 40,
+        "cnt": 22128,
+        "cnt_noised": 22130.19795373216
+      },
+      {
+        "age_bucket": 50,
+        "cnt": 13478,
+        "cnt_noised": 13466.353673917047
+      },
+      {
+        "age_bucket": 60,
+        "cnt": 6158,
+        "cnt_noised": 6146.352127821604
+      },
+      {
+        "age_bucket": 70,
+        "cnt": 1567,
+        "cnt_noised": 1545.472754631391
+      },
+      {
+        "age_bucket": 80,
+        "cnt": 260,
+        "cnt_noised": 273.1808368391999
+      },
+      {
+        "age_bucket": 90,
+        "cnt": 94,
+        "cnt_noised": 96.2593497306732
+      }
+    ]
+  },
+  {
+    "query": "count_by_age",
+    "epsilon": 0.5,
+    "sensitivity": 1,
+    "mae": 2.4556291390871365,
+    "relative_error": 0.0008239502512716057,
+    "results": [
+      {
+        "age_bucket": 10,
+        "cnt": 5164,
+        "cnt_noised": 5165.07620576229
+      },
+      {
+        "age_bucket": 20,
+        "cnt": 24696,
+        "cnt_noised": 24689.619859979724
+      },
+      {
+        "age_bucket": 30,
+        "cnt": 26455,
+        "cnt_noised": 26460.620820589196
+      },
+      {
+        "age_bucket": 40,
+        "cnt": 22128,
+        "cnt_noised": 22130.18656472559
+      },
+      {
+        "age_bucket": 50,
+        "cnt": 13478,
+        "cnt_noised": 13476.287152953915
+      },
+      {
+        "age_bucket": 60,
+        "cnt": 6158,
+        "cnt_noised": 6155.976872814528
+      },
+      {
+        "age_bucket": 70,
+        "cnt": 1567,
+        "cnt_noised": 1564.994172102713
+      },
+      {
+        "age_bucket": 80,
+        "cnt": 260,
+        "cnt_noised": 259.0064322750135
+      },
+      {
+        "age_bucket": 90,
+        "cnt": 94,
+        "cnt_noised": 94.10156130060182
+      }
+    ]
+  },
+  {
+    "query": "count_by_age",
+    "epsilon": 1.0,
+    "sensitivity": 1,
+    "mae": 0.5466264640234818,
+    "relative_error": 0.001475651829931643,
+    "results": [
+      {
+        "age_bucket": 10,
+        "cnt": 5164,
+        "cnt_noised": 5163.85369021006
+      },
+      {
+        "age_bucket": 20,
+        "cnt": 24696,
+        "cnt_noised": 24695.459502282254
+      },
+      {
+        "age_bucket": 30,
+        "cnt": 26455,
+        "cnt_noised": 26455.25322369334
+      },
+      {
+        "age_bucket": 40,
+        "cnt": 22128,
+        "cnt_noised": 22126.723412492207
+      },
+      {
+        "age_bucket": 50,
+        "cnt": 13478,
+        "cnt_noised": 13477.462640952886
+      },
+      {
+        "age_bucket": 60,
+        "cnt": 6158,
+        "cnt_noised": 6157.689013389472
+      },
+      {
+        "age_bucket": 70,
+        "cnt": 1567,
+        "cnt_noised": 1566.9080381734764
+      },
+      {
+        "age_bucket": 80,
+        "cnt": 260,
+        "cnt_noised": 260.844788830471
+      },
+      {
+        "age_bucket": 90,
+        "cnt": 94,
+        "cnt_noised": 93.08207684724339
+      }
+    ]
+  },
+  {
+    "query": "count_by_age",
+    "epsilon": 5.0,
+    "sensitivity": 1,
+    "mae": 0.26408922220684083,
+    "relative_error": 0.0004996241607600092,
+    "results": [
+      {
+        "age_bucket": 10,
+        "cnt": 5164,
+        "cnt_noised": 5164.005776394894
+      },
+      {
+        "age_bucket": 20,
+        "cnt": 24696,
+        "cnt_noised": 24696.04087150815
+      },
+      {
+        "age_bucket": 30,
+        "cnt": 26455,
+        "cnt_noised": 26454.52475545041
+      },
+      {
+        "age_bucket": 40,
+        "cnt": 22128,
+        "cnt_noised": 22128.048437168018
+      },
+      {
+        "age_bucket": 50,
+        "cnt": 13478,
+        "cnt_noised": 13477.784853735238
+      },
+      {
+        "age_bucket": 60,
+        "cnt": 6158,
+        "cnt_noised": 6157.592114518973
+      },
+      {
+        "age_bucket": 70,
+        "cnt": 1567,
+        "cnt_noised": 1567.4561081225893
+      },
+      {
+        "age_bucket": 80,
+        "cnt": 260,
+        "cnt_noised": 260.5354966323803
+      },
+      {
+        "age_bucket": 90,
+        "cnt": 94,
+        "cnt_noised": 94.19183687845059
+      }
+    ]
+  },
+  {
+    "query": "avg_capital_gain_by_education",
+    "epsilon": 0.1,
+    "sensitivity": "sum:100000, count:1",
+    "mae": 1137.5400122242943,
+    "relative_error": 1.3830910032531918,
+    "results": [
+      {
+        "education": "Prof-school",
+        "avg_gain": 8971.467611336033,
+        "cnt": 1976,
+        "avg_gain_noised": 8292.62220590679
+      },
+      {
+        "education": "Doctorate",
+        "avg_gain": 3895.903479973736,
+        "cnt": 1523,
+        "avg_gain_noised": 1716.3242513813107
+      },
+      {
+        "education": "Masters",
+        "avg_gain": 2526.4122905027934,
+        "cnt": 5370,
+        "avg_gain_noised": 2695.399297036856
+      },
+      {
+        "education": "Bachelors",
+        "avg_gain": 1957.02765093861,
+        "cnt": 15768,
+        "avg_gain_noised": 1936.2983089961308
+      },
+      {
+        "education": "Preschool",
+        "avg_gain": 991.6041237113402,
+        "cnt": 485,
+        "avg_gain_noised": -5194.9267799474555
+      },
+      {
+        "education": "9th",
+        "avg_gain": 831.1851645287228,
+        "cnt": 1793,
+        "avg_gain_noised": 829.0340985086698
+      },
+      {
+        "education": "Assoc-voc",
+        "avg_gain": 806.171052631579,
+        "cnt": 4332,
+        "avg_gain_noised": -434.5151314566165
+      },
+      {
+        "education": "Assoc-acdm",
+        "avg_gain": 783.3728273464658,
+        "cnt": 3452,
+        "avg_gain_noised": 1776.9489847672667
+      },
+      {
+        "education": "Some-college",
+        "avg_gain": 736.1211462907326,
+        "cnt": 21635,
+        "avg_gain_noised": 675.39280294145
+      },
+      {
+        "education": "12th",
+        "avg_gain": 733.671661237785,
+        "cnt": 1535,
+        "avg_gain_noised": 1255.8664507562094
+      },
+      {
+        "education": "HS-grad",
+        "avg_gain": 711.166672021075,
+        "cnt": 31127,
+        "avg_gain_noised": 680.336808617261
+      },
+      {
+        "education": "1st-4th",
+        "avg_gain": 614.2915601023018,
+        "cnt": 782,
+        "avg_gain_noised": 725.3200285110549
+      },
+      {
+        "education": "10th",
+        "avg_gain": 592.2863261943987,
+        "cnt": 3035,
+        "avg_gain_noised": 659.4218090589261
+      },
+      {
+        "education": "7th-8th",
+        "avg_gain": 563.7612216566405,
+        "cnt": 2161,
+        "avg_gain_noised": -356.8503337384762
+      },
+      {
+        "education": "5th-6th",
+        "avg_gain": 536.4117174959872,
+        "cnt": 1246,
+        "avg_gain_noised": 5134.620473334592
+      },
+      {
+        "education": "11th",
+        "avg_gain": 393.49285714285713,
+        "cnt": 3780,
+        "avg_gain_noised": 812.3105002669873
+      }
+    ]
+  },
+  {
+    "query": "avg_capital_gain_by_education",
+    "epsilon": 0.5,
+    "sensitivity": "sum:100000, count:1",
+    "mae": 455.0274585077528,
+    "relative_error": 0.4715705397581577,
+    "results": [
+      {
+        "education": "Prof-school",
+        "avg_gain": 8971.467611336033,
+        "cnt": 1976,
+        "avg_gain_noised": 8594.480437404667
+      },
+      {
+        "education": "Doctorate",
+        "avg_gain": 3895.903479973736,
+        "cnt": 1523,
+        "avg_gain_noised": 4857.662573008301
+      },
+      {
+        "education": "Masters",
+        "avg_gain": 2526.4122905027934,
+        "cnt": 5370,
+        "avg_gain_noised": 2583.8017301594923
+      },
+      {
+        "education": "Bachelors",
+        "avg_gain": 1957.02765093861,
+        "cnt": 15768,
+        "avg_gain_noised": 1933.462105671739
+      },
+      {
+        "education": "Preschool",
+        "avg_gain": 991.6041237113402,
+        "cnt": 485,
+        "avg_gain_noised": -2691.5030723074424
+      },
+      {
+        "education": "9th",
+        "avg_gain": 831.1851645287228,
+        "cnt": 1793,
+        "avg_gain_noised": 1053.6842228528037
+      },
+      {
+        "education": "Assoc-voc",
+        "avg_gain": 806.171052631579,
+        "cnt": 4332,
+        "avg_gain_noised": 856.6052626008477
+      },
+      {
+        "education": "Assoc-acdm",
+        "avg_gain": 783.3728273464658,
+        "cnt": 3452,
+        "avg_gain_noised": 853.7979478027449
+      },
+      {
+        "education": "Some-college",
+        "avg_gain": 736.1211462907326,
+        "cnt": 21635,
+        "avg_gain_noised": 750.4781507472978
+      },
+      {
+        "education": "12th",
+        "avg_gain": 733.671661237785,
+        "cnt": 1535,
+        "avg_gain_noised": 235.88711793117852
+      },
+      {
+        "education": "HS-grad",
+        "avg_gain": 711.166672021075,
+        "cnt": 31127,
+        "avg_gain_noised": 706.8194046162743
+      },
+      {
+        "education": "1st-4th",
+        "avg_gain": 614.2915601023018,
+        "cnt": 782,
+        "avg_gain_noised": -133.61842775876866
+      },
+      {
+        "education": "10th",
+        "avg_gain": 592.2863261943987,
+        "cnt": 3035,
+        "avg_gain_noised": 762.9653865769067
+      },
+      {
+        "education": "7th-8th",
+        "avg_gain": 563.7612216566405,
+        "cnt": 2161,
+        "avg_gain_noised": 616.3514961401859
+      },
+      {
+        "education": "5th-6th",
+        "avg_gain": 536.4117174959872,
+        "cnt": 1246,
+        "avg_gain_noised": 407.79236437439897
+      },
+      {
+        "education": "11th",
+        "avg_gain": 393.49285714285713,
+        "cnt": 3780,
+        "avg_gain_noised": 175.50784869340885
+      }
+    ]
+  },
+  {
+    "query": "avg_capital_gain_by_education",
+    "epsilon": 1.0,
+    "sensitivity": "sum:100000, count:1",
+    "mae": 128.7917166860537,
+    "relative_error": 0.14866519410077078,
+    "results": [
+      {
+        "education": "Prof-school",
+        "avg_gain": 8971.467611336033,
+        "cnt": 1976,
+        "avg_gain_noised": 8683.204085221885
+      },
+      {
+        "education": "Doctorate",
+        "avg_gain": 3895.903479973736,
+        "cnt": 1523,
+        "avg_gain_noised": 3942.8438575896585
+      },
+      {
+        "education": "Masters",
+        "avg_gain": 2526.4122905027934,
+        "cnt": 5370,
+        "avg_gain_noised": 2507.691918487222
+      },
+      {
+        "education": "Bachelors",
+        "avg_gain": 1957.02765093861,
+        "cnt": 15768,
+        "avg_gain_noised": 1957.2266108079984
+      },
+      {
+        "education": "Preschool",
+        "avg_gain": 991.6041237113402,
+        "cnt": 485,
+        "avg_gain_noised": 1681.1204450829323
+      },
+      {
+        "education": "9th",
+        "avg_gain": 831.1851645287228,
+        "cnt": 1793,
+        "avg_gain_noised": 752.2336210378953
+      },
+      {
+        "education": "Assoc-voc",
+        "avg_gain": 806.171052631579,
+        "cnt": 4332,
+        "avg_gain_noised": 797.2186224990705
+      },
+      {
+        "education": "Assoc-acdm",
+        "avg_gain": 783.3728273464658,
+        "cnt": 3452,
+        "avg_gain_noised": 825.5569558369907
+      },
+      {
+        "education": "Some-college",
+        "avg_gain": 736.1211462907326,
+        "cnt": 21635,
+        "avg_gain_noised": 728.9472000472972
+      },
+      {
+        "education": "12th",
+        "avg_gain": 733.671661237785,
+        "cnt": 1535,
+        "avg_gain_noised": 489.9854666356025
+      },
+      {
+        "education": "HS-grad",
+        "avg_gain": 711.166672021075,
+        "cnt": 31127,
+        "avg_gain_noised": 707.6151807435996
+      },
+      {
+        "education": "1st-4th",
+        "avg_gain": 614.2915601023018,
+        "cnt": 782,
+        "avg_gain_noised": 323.7625198158644
+      },
+      {
+        "education": "10th",
+        "avg_gain": 592.2863261943987,
+        "cnt": 3035,
+        "avg_gain_noised": 723.6036912572761
+      },
+      {
+        "education": "7th-8th",
+        "avg_gain": 563.7612216566405,
+        "cnt": 2161,
+        "avg_gain_noised": 652.3866860675664
+      },
+      {
+        "education": "5th-6th",
+        "avg_gain": 536.4117174959872,
+        "cnt": 1246,
+        "avg_gain_noised": 586.3965764431068
+      },
+      {
+        "education": "11th",
+        "avg_gain": 393.49285714285713,
+        "cnt": 3780,
+        "avg_gain_noised": 465.56430418878006
+      }
+    ]
+  },
+  {
+    "query": "avg_capital_gain_by_education",
+    "epsilon": 5.0,
+    "sensitivity": "sum:100000, count:1",
+    "mae": 13.523800461252193,
+    "relative_error": 0.016441285756588958,
+    "results": [
+      {
+        "education": "Prof-school",
+        "avg_gain": 8971.467611336033,
+        "cnt": 1976,
+        "avg_gain_noised": 8946.673243561412
+      },
+      {
+        "education": "Doctorate",
+        "avg_gain": 3895.903479973736,
+        "cnt": 1523,
+        "avg_gain_noised": 3886.1863360574143
+      },
+      {
+        "education": "Masters",
+        "avg_gain": 2526.4122905027934,
+        "cnt": 5370,
+        "avg_gain_noised": 2542.2548571801567
+      },
+      {
+        "education": "Bachelors",
+        "avg_gain": 1957.02765093861,
+        "cnt": 15768,
+        "avg_gain_noised": 1955.95729112477
+      },
+      {
+        "education": "Preschool",
+        "avg_gain": 991.6041237113402,
+        "cnt": 485,
+        "avg_gain_noised": 995.7805657478724
+      },
+      {
+        "education": "9th",
+        "avg_gain": 831.1851645287228,
+        "cnt": 1793,
+        "avg_gain_noised": 842.810808361979
+      },
+      {
+        "education": "Assoc-voc",
+        "avg_gain": 806.171052631579,
+        "cnt": 4332,
+        "avg_gain_noised": 802.9671301690918
+      },
+      {
+        "education": "Assoc-acdm",
+        "avg_gain": 783.3728273464658,
+        "cnt": 3452,
+        "avg_gain_noised": 816.7514602072962
+      },
+      {
+        "education": "Some-college",
+        "avg_gain": 736.1211462907326,
+        "cnt": 21635,
+        "avg_gain_noised": 740.9017998990066
+      },
+      {
+        "education": "12th",
+        "avg_gain": 733.671661237785,
+        "cnt": 1535,
+        "avg_gain_noised": 715.6561708284983
+      },
+      {
+        "education": "HS-grad",
+        "avg_gain": 711.166672021075,
+        "cnt": 31127,
+        "avg_gain_noised": 711.1663789090252
+      },
+      {
+        "education": "1st-4th",
+        "avg_gain": 614.2915601023018,
+        "cnt": 782,
+        "avg_gain_noised": 588.1285195152357
+      },
+      {
+        "education": "10th",
+        "avg_gain": 592.2863261943987,
+        "cnt": 3035,
+        "avg_gain_noised": 584.8941357744204
+      },
+      {
+        "education": "7th-8th",
+        "avg_gain": 563.7612216566405,
+        "cnt": 2161,
+        "avg_gain_noised": 515.4810790350502
+      },
+      {
+        "education": "5th-6th",
+        "avg_gain": 536.4117174959872,
+        "cnt": 1246,
+        "avg_gain_noised": 544.2978750508939
+      },
+      {
+        "education": "11th",
+        "avg_gain": 393.49285714285713,
+        "cnt": 3780,
+        "avg_gain_noised": 393.5466168344889
+      }
+    ]
+  },
+  {
+    "query": "sum_hours_by_occupation",
+    "epsilon": 0.1,
+    "sensitivity": 100,
+    "mae": 1162.018686066108,
+    "relative_error": 0.003727943494679918,
+    "results": [
+      {
+        "occupation": "Exec-managerial",
+        "total_hours": 547650,
+        "total_hours_noised": 545938.4160671491
+      },
+      {
+        "occupation": "Prof-specialty",
+        "total_hours": 522561,
+        "total_hours_noised": 523671.49761368637
+      },
+      {
+        "occupation": "Craft-repair",
+        "total_hours": 519619,
+        "total_hours_noised": 519175.14763402997
+      },
+      {
+        "occupation": "Sales",
+        "total_hours": 447069,
+        "total_hours_noised": 446082.9223872103
+      },
+      {
+        "occupation": "Adm-clerical",
+        "total_hours": 428162,
+        "total_hours_noised": 425655.46452168556
+      },
+      {
+        "occupation": "Other-service",
+        "total_hours": 349925,
+        "total_hours_noised": 350125.63122403465
+      },
+      {
+        "occupation": "Machine-op-inspct",
+        "total_hours": 249260,
+        "total_hours_noised": 249698.70455370742
+      },
+      {
+        "occupation": "Transport-moving",
+        "total_hours": 221377,
+        "total_hours_noised": 217971.06113090273
+      },
+      {
+        "occupation": "Handlers-cleaners",
+        "total_hours": 166155,
+        "total_hours_noised": 166179.48340398955
+      },
+      {
+        "occupation": "Farming-fishing",
+        "total_hours": 150863,
+        "total_hours_noised": 150071.1181937792
+      }
+    ]
+  },
+  {
+    "query": "sum_hours_by_occupation",
+    "epsilon": 0.5,
+    "sensitivity": 100,
+    "mae": 213.12374005955644,
+    "relative_error": 0.0008320180130413933,
+    "results": [
+      {
+        "occupation": "Exec-managerial",
+        "total_hours": 547650,
+        "total_hours_noised": 547718.5954321976
+      },
+      {
+        "occupation": "Prof-specialty",
+        "total_hours": 522561,
+        "total_hours_noised": 522350.3101800572
+      },
+      {
+        "occupation": "Craft-repair",
+        "total_hours": 519619,
+        "total_hours_noised": 519715.21306940157
+      },
+      {
+        "occupation": "Sales",
+        "total_hours": 447069,
+        "total_hours_noised": 447017.62650019606
+      },
+      {
+        "occupation": "Adm-clerical",
+        "total_hours": 428162,
+        "total_hours_noised": 428575.4393274489
+      },
+      {
+        "occupation": "Other-service",
+        "total_hours": 349925,
+        "total_hours_noised": 349666.8336256293
+      },
+      {
+        "occupation": "Machine-op-inspct",
+        "total_hours": 249260,
+        "total_hours_noised": 249183.4937875587
+      },
+      {
+        "occupation": "Transport-moving",
+        "total_hours": 221377,
+        "total_hours_noised": 221080.39228364956
+      },
+      {
+        "occupation": "Handlers-cleaners",
+        "total_hours": 166155,
+        "total_hours_noised": 166533.60864331815
+      },
+      {
+        "occupation": "Farming-fishing",
+        "total_hours": 150863,
+        "total_hours_noised": 151144.0373053202
+      }
+    ]
+  },
+  {
+    "query": "sum_hours_by_occupation",
+    "epsilon": 1.0,
+    "sensitivity": 100,
+    "mae": 81.44255791225878,
+    "relative_error": 0.00032016080685870517,
+    "results": [
+      {
+        "occupation": "Exec-managerial",
+        "total_hours": 547650,
+        "total_hours_noised": 547583.8125211735
+      },
+      {
+        "occupation": "Prof-specialty",
+        "total_hours": 522561,
+        "total_hours_noised": 522599.5615558484
+      },
+      {
+        "occupation": "Craft-repair",
+        "total_hours": 519619,
+        "total_hours_noised": 519719.63368920796
+      },
+      {
+        "occupation": "Sales",
+        "total_hours": 447069,
+        "total_hours_noised": 447080.69851801265
+      },
+      {
+        "occupation": "Adm-clerical",
+        "total_hours": 428162,
+        "total_hours_noised": 428168.1132229634
+      },
+      {
+        "occupation": "Other-service",
+        "total_hours": 349925,
+        "total_hours_noised": 349852.3719073204
+      },
+      {
+        "occupation": "Machine-op-inspct",
+        "total_hours": 249260,
+        "total_hours_noised": 249091.90958148055
+      },
+      {
+        "occupation": "Transport-moving",
+        "total_hours": 221377,
+        "total_hours_noised": 221535.19760446346
+      },
+      {
+        "occupation": "Handlers-cleaners",
+        "total_hours": 166155,
+        "total_hours_noised": 166316.36272470886
+      },
+      {
+        "occupation": "Farming-fishing",
+        "total_hours": 150863,
+        "total_hours_noised": 150893.9522738923
+      }
+    ]
+  },
+  {
+    "query": "sum_hours_by_occupation",
+    "epsilon": 5.0,
+    "sensitivity": 100,
+    "mae": 20.157608681113924,
+    "relative_error": 7.73403955864309e-05,
+    "results": [
+      {
+        "occupation": "Exec-managerial",
+        "total_hours": 547650,
+        "total_hours_noised": 547642.229597686
+      },
+      {
+        "occupation": "Prof-specialty",
+        "total_hours": 522561,
+        "total_hours_noised": 522553.82128287747
+      },
+      {
+        "occupation": "Craft-repair",
+        "total_hours": 519619,
+        "total_hours_noised": 519631.02636498335
+      },
+      {
+        "occupation": "Sales",
+        "total_hours": 447069,
+        "total_hours_noised": 447100.6190033709
+      },
+      {
+        "occupation": "Adm-clerical",
+        "total_hours": 428162,
+        "total_hours_noised": 428191.7597077767
+      },
+      {
+        "occupation": "Other-service",
+        "total_hours": 349925,
+        "total_hours_noised": 349941.4083002274
+      },
+      {
+        "occupation": "Machine-op-inspct",
+        "total_hours": 249260,
+        "total_hours_noised": 249266.68327026017
+      },
+      {
+        "occupation": "Transport-moving",
+        "total_hours": 221377,
+        "total_hours_noised": 221341.35747127415
+      },
+      {
+        "occupation": "Handlers-cleaners",
+        "total_hours": 166155,
+        "total_hours_noised": 166132.4138743622
+      },
+      {
+        "occupation": "Farming-fishing",
+        "total_hours": 150863,
+        "total_hours_noised": 150894.90166639234
+      }
+    ]
+  }
+]

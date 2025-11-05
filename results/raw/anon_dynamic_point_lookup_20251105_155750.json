@@ -1,0 +1,34 @@
+[
+  {
+    "experiment": "anon_dynamic_point_lookup",
+    "system": "dynamic",
+    "role": "masked_user",
+    "query_idx": 0,
+    "query": "-- Workload 1: Point Lookup\n-- Tests: Index scan performance, masking overhead on single row\n\n-- Adult table\nSELECT * FROM adult_raw_100000 WHERE id = 5000",
+    "runs": 5,
+    "wall_clock_median_ms": 1.0228680039290339,
+    "wall_clock_mean_ms": 1.0642846027622,
+    "wall_clock_std_ms": 0.3436497653349088,
+    "execution_median_ms": null,
+    "execution_mean_ms": null,
+    "planning_median_ms": 0,
+    "row_count": 1,
+    "explain_plan": null
+  },
+  {
+    "experiment": "anon_dynamic_point_lookup",
+    "system": "dynamic",
+    "role": "masked_user",
+    "query_idx": 1,
+    "query": "-- Healthcare table  \nSELECT * FROM healthcare_raw_100000 WHERE id = 5000",
+    "runs": 5,
+    "wall_clock_median_ms": 1.4026090066181496,
+    "wall_clock_mean_ms": 1.3039940036833286,
+    "wall_clock_std_ms": 0.37361357877755436,
+    "execution_median_ms": null,
+    "execution_mean_ms": null,
+    "planning_median_ms": 0,
+    "row_count": 1,
+    "explain_plan": null
+  }
+]

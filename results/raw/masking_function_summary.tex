@@ -1,0 +1,13 @@
+\begin{tabular}{lrrrrrl}
+\toprule
+Function & Latency (ms) & Overhead (%) & Storage (MB) & Cardinality Ratio & JS Divergence & Index Compatible \\
+\midrule
+original & 11.150000 & 0.000000 & 7.540000 & NaN & NaN & NaN \\
+hash & 6.250000 & -43.900000 & 12.920000 & 1.000000 & 0.833000 & Yes \\
+partial & 5.160000 & -53.700000 & 6.920000 & 0.867000 & 0.808000 & Yes \\
+shuffle & 4.530000 & -59.400000 & 7.900000 & 1.000000 & 0.000000 & Yes \\
+fake & 5.010000 & -55.100000 & 15.350000 & 66.600000 & 0.833000 & Yes \\
+noise & 13.410000 & 20.300000 & 7.960000 & 1.000000 & 0.000000 & No \\
+generalize & 9.720000 & -12.800000 & 7.890000 & 0.400000 & 0.833000 & No \\
+\bottomrule
+\end{tabular}

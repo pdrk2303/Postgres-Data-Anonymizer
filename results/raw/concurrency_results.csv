@@ -1,0 +1,17 @@
+tps,latency_avg_ms,clients,success,system,table,role
+55.940073,17.876,1,True,raw,adult_raw_100000,postgres
+154.136226,25.951,4,True,raw,adult_raw_100000,postgres
+145.393377,55.023,8,True,raw,adult_raw_100000,postgres
+142.672414,112.145,16,True,raw,adult_raw_100000,postgres
+34.595439,28.906,1,True,view,adult_masked_view,postgres
+91.179016,43.87,4,True,view,adult_masked_view,postgres
+94.675327,84.499,8,True,view,adult_masked_view,postgres
+97.572969,163.98,16,True,view,adult_masked_view,postgres
+61.243427,16.328,1,True,static,adult_static_masked,postgres
+155.245847,25.766,4,True,static,adult_static_masked,postgres
+159.112661,50.279,8,True,static,adult_static_masked,postgres
+149.286133,107.177,16,True,static,adult_static_masked,postgres
+0.28855,3465.603,1,True,dynamic,adult_raw_100000,masked_user
+0.720042,5555.231,4,True,dynamic,adult_raw_100000,masked_user
+0.763212,10482.017,8,True,dynamic,adult_raw_100000,masked_user
+0.731176,21882.559,16,True,dynamic,adult_raw_100000,masked_user

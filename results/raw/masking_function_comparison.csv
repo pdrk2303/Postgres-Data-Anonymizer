@@ -1,0 +1,8 @@
+masking_function,table,latency_point_lookup_ms,latency_range_scan_ms,latency_group_by_ms,latency_join_aggregate_ms,storage_total_mb,storage_table_mb,storage_index_mb,cardinality_ratio_occupation,js_divergence_occupation,index_compatible,overhead_point_lookup_pct,overhead_range_scan_pct,overhead_group_by_pct,overhead_join_aggregate_pct
+original,mask_test_data,4.77,5.17,11.15,13.69,7.54,7.5,0.0,,,,0.0,0.0,0.0,0.0
+hash,adult_mask_hash,4.34,6.01,6.25,16.16,12.92,12.5,0.38,1.0,0.833,Yes,-9.0,16.2,-43.9,18.0
+partial,adult_mask_partial,2.72,4.35,5.16,10.9,6.92,6.53,0.35,0.867,0.808,Yes,-43.0,-15.9,-53.7,-20.4
+shuffle,adult_mask_shuffle,10.2,5.49,4.53,10.94,7.9,7.5,0.36,1.0,0.0,Yes,113.8,6.2,-59.4,-20.1
+fake,adult_mask_anon_fake,3.61,5.74,5.01,14.66,15.35,14.94,0.38,66.6,0.833,Yes,-24.3,11.0,-55.1,7.1
+noise,adult_mask_noise,3.42,7.61,13.41,15.67,7.96,7.5,0.42,1.0,0.0,No,-28.3,47.2,20.3,14.5
+generalize,adult_mask_generalize,3.19,1.86,9.72,10.98,7.89,7.5,0.35,0.4,0.833,No,-33.1,-64.0,-12.8,-19.8

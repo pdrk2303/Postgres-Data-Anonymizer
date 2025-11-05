@@ -1,0 +1,34 @@
+[
+  {
+    "experiment": "anon_dynamic_distinct",
+    "system": "dynamic",
+    "role": "masked_user",
+    "query_idx": 0,
+    "query": "-- Workload 4: Distinct Count\n-- Tests: Impact of masking on cardinality estimation, HashAggregate performance\n\n-- Adult: Unique occupations by education level\nSELECT education, COUNT(DISTINCT occupat",
+    "runs": 5,
+    "wall_clock_median_ms": 1654.3758870102465,
+    "wall_clock_mean_ms": 1732.2122668032534,
+    "wall_clock_std_ms": 171.36291201750277,
+    "execution_median_ms": null,
+    "execution_mean_ms": null,
+    "planning_median_ms": 0,
+    "row_count": 6,
+    "explain_plan": null
+  },
+  {
+    "experiment": "anon_dynamic_distinct",
+    "system": "dynamic",
+    "role": "masked_user",
+    "query_idx": 1,
+    "query": "-- Healthcare: Unique doctors per hospital\nSELECT hospital, COUNT(DISTINCT doctor) as doctor_count\nFROM healthcare_raw_100000\nGROUP BY hospital\nORDER BY doctor_count DESC",
+    "runs": 5,
+    "wall_clock_median_ms": 4522.811006012489,
+    "wall_clock_mean_ms": 5680.232811198221,
+    "wall_clock_std_ms": 2403.9060383803267,
+    "execution_median_ms": null,
+    "execution_mean_ms": null,
+    "planning_median_ms": 0,
+    "row_count": 39292,
+    "explain_plan": null
+  }
+]

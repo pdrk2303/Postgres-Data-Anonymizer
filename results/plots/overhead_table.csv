@@ -1,0 +1,6 @@
+Workload,dynamic,static,view
+distinct,1512.0,-3.5,23.9
+groupby,11013.3,17.4,23.8
+point_lookup,1.5,630.7,2.9
+range,24003.4,27.5,45.8
+topk,9541.6,4.4,48.3

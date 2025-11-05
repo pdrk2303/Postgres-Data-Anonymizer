@@ -1,0 +1,298 @@
+[
+  {
+    "experiment": "anon_static_distinct",
+    "system": "static",
+    "role": "postgres",
+    "query_idx": 0,
+    "query": "-- Workload 4: Distinct Count\n-- Tests: Impact of masking on cardinality estimation, HashAggregate performance\n\n-- Adult: Unique occupations by education level\nSELECT education, COUNT(DISTINCT occupat",
+    "runs": 5,
+    "wall_clock_median_ms": 56.665211988729425,
+    "wall_clock_mean_ms": 59.47890460083727,
+    "wall_clock_std_ms": 7.868532874096312,
+    "execution_median_ms": 75.322,
+    "execution_mean_ms": 74.6198,
+    "planning_median_ms": 0.075,
+    "row_count": 16,
+    "explain_plan": {
+      "Plan": {
+        "Node Type": "Aggregate",
+        "Strategy": "Sorted",
+        "Partial Mode": "Simple",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 621.46,
+        "Total Cost": 11689.46,
+        "Plan Rows": 16,
+        "Plan Width": 17,
+        "Actual Startup Time": 7.141,
+        "Actual Total Time": 77.851,
+        "Actual Rows": 16,
+        "Actual Loops": 1,
+        "Group Key": [
+          "education"
+        ],
+        "Shared Hit Blocks": 21575,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 0,
+        "Temp Written Blocks": 0,
+        "Plans": [
+          {
+            "Node Type": "Incremental Sort",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 621.46,
+            "Total Cost": 11189.3,
+            "Plan Rows": 100000,
+            "Plan Width": 22,
+            "Actual Startup Time": 3.733,
+            "Actual Total Time": 66.082,
+            "Actual Rows": 100000,
+            "Actual Loops": 1,
+            "Sort Key": [
+              "education",
+              "occupation"
+            ],
+            "Presorted Key": [
+              "education"
+            ],
+            "Full-sort Groups": {
+              "Group Count": 16,
+              "Sort Methods Used": [
+                "quicksort"
+              ],
+              "Sort Space Memory": {
+                "Average Sort Space Used": 27,
+                "Peak Sort Space Used": 27
+              }
+            },
+            "Pre-sorted Groups": {
+              "Group Count": 16,
+              "Sort Methods Used": [
+                "quicksort"
+              ],
+              "Sort Space Memory": {
+                "Average Sort Space Used": 897,
+                "Peak Sort Space Used": 2004
+              }
+            },
+            "Shared Hit Blocks": 21575,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Index Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Scan Direction": "Forward",
+                "Index Name": "idx_adult_static_education",
+                "Relation Name": "adult_static_masked",
+                "Alias": "adult_static_masked",
+                "Startup Cost": 0.29,
+                "Total Cost": 3634.16,
+                "Plan Rows": 100000,
+                "Plan Width": 22,
+                "Actual Startup Time": 0.011,
+                "Actual Total Time": 29.885,
+                "Actual Rows": 100000,
+                "Actual Loops": 1,
+                "Shared Hit Blocks": 21575,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          }
+        ]
+      },
+      "Planning": {
+        "Shared Hit Blocks": 0,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 0,
+        "Temp Written Blocks": 0
+      },
+      "Planning Time": 0.075,
+      "Triggers": [],
+      "Execution Time": 78.171
+    }
+  },
+  {
+    "experiment": "anon_static_distinct",
+    "system": "static",
+    "role": "postgres",
+    "query_idx": 1,
+    "query": "-- Healthcare: Unique doctors per hospital\nSELECT hospital, COUNT(DISTINCT doctor) as doctor_count\nFROM healthcare_static_masked\nGROUP BY hospital\nORDER BY doctor_count DESC",
+    "runs": 5,
+    "wall_clock_median_ms": 313.03156798821874,
+    "wall_clock_mean_ms": 308.27612939465325,
+    "wall_clock_std_ms": 19.846580262089287,
+    "execution_median_ms": 246.423,
+    "execution_mean_ms": 248.0756,
+    "planning_median_ms": 0.081,
+    "row_count": 39292,
+    "explain_plan": {
+      "Plan": {
+        "Node Type": "Sort",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 14909.27,
+        "Total Cost": 14991.17,
+        "Plan Rows": 32759,
+        "Plan Width": 25,
+        "Actual Startup Time": 224.941,
+        "Actual Total Time": 226.606,
+        "Actual Rows": 39292,
+        "Actual Loops": 1,
+        "Sort Key": [
+          "(count(DISTINCT doctor)) DESC"
+        ],
+        "Sort Method": "quicksort",
+        "Sort Space Used": 3318,
+        "Sort Space Type": "Memory",
+        "Shared Hit Blocks": 2070,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 0,
+        "Temp Written Blocks": 0,
+        "Plans": [
+          {
+            "Node Type": "Aggregate",
+            "Strategy": "Sorted",
+            "Partial Mode": "Simple",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 11374.82,
+            "Total Cost": 12452.41,
+            "Plan Rows": 32759,
+            "Plan Width": 25,
+            "Actual Startup Time": 194.925,
+            "Actual Total Time": 220.168,
+            "Actual Rows": 39292,
+            "Actual Loops": 1,
+            "Group Key": [
+              "hospital"
+            ],
+            "Shared Hit Blocks": 2070,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Sort",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 11374.82,
+                "Total Cost": 11624.82,
+                "Plan Rows": 100000,
+                "Plan Width": 31,
+                "Actual Startup Time": 194.906,
+                "Actual Total Time": 202.274,
+                "Actual Rows": 100000,
+                "Actual Loops": 1,
+                "Sort Key": [
+                  "hospital",
+                  "doctor"
+                ],
+                "Sort Method": "quicksort",
+                "Sort Space Used": 8095,
+                "Sort Space Type": "Memory",
+                "Shared Hit Blocks": 2070,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0,
+                "Plans": [
+                  {
+                    "Node Type": "Seq Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Relation Name": "healthcare_static_masked",
+                    "Alias": "healthcare_static_masked",
+                    "Startup Cost": 0.0,
+                    "Total Cost": 3070.0,
+                    "Plan Rows": 100000,
+                    "Plan Width": 31,
+                    "Actual Startup Time": 0.009,
+                    "Actual Total Time": 9.832,
+                    "Actual Rows": 100000,
+                    "Actual Loops": 1,
+                    "Shared Hit Blocks": 2070,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "Planning": {
+        "Shared Hit Blocks": 0,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 0,
+        "Temp Written Blocks": 0
+      },
+      "Planning Time": 0.081,
+      "Triggers": [],
+      "Execution Time": 228.715
+    }
+  }
+]

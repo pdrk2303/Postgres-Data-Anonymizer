@@ -1,0 +1,8 @@
+Function,Latency (ms),Overhead (%),Storage (MB),Cardinality Ratio,JS Divergence,Index Compatible
+original,11.15,0.0,7.54,,,
+hash,6.25,-43.9,12.92,1.0,0.833,Yes
+partial,5.16,-53.7,6.92,0.867,0.808,Yes
+shuffle,4.53,-59.4,7.9,1.0,0.0,Yes
+fake,5.01,-55.1,15.35,66.6,0.833,Yes
+noise,13.41,20.3,7.96,1.0,0.0,No
+generalize,9.72,-12.8,7.89,0.4,0.833,No

@@ -1,0 +1,94 @@
+{
+  "point_lookup": {
+    "raw": {
+      "node_type": "Index Scan",
+      "uses_index": true,
+      "actual_time_ms": 0.022,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 3
+    },
+    "view": {
+      "node_type": "Index Scan",
+      "uses_index": true,
+      "actual_time_ms": 0.07,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 3
+    },
+    "static": {
+      "node_type": "Seq Scan",
+      "uses_index": false,
+      "actual_time_ms": 9.212,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 1857
+    }
+  },
+  "index_scan": {
+    "raw": {
+      "node_type": "Seq Scan",
+      "uses_index": false,
+      "actual_time_ms": 7.563,
+      "row_estimate_error": 0.04284103720405862,
+      "buffer_hits": 1880
+    },
+    "view": {
+      "node_type": "Seq Scan",
+      "uses_index": false,
+      "actual_time_ms": 18.406,
+      "row_estimate_error": 0.9617503059975521,
+      "buffer_hits": 1880
+    },
+    "static": {
+      "node_type": "Bitmap Heap Scan",
+      "uses_index": false,
+      "actual_time_ms": 1.625,
+      "row_estimate_error": 0.010898158586997369,
+      "buffer_hits": 1432
+    }
+  },
+  "seq_scan": {
+    "raw": {
+      "node_type": "Aggregate",
+      "uses_index": false,
+      "actual_time_ms": 8.381,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 1880
+    },
+    "view": {
+      "node_type": "Aggregate",
+      "uses_index": false,
+      "actual_time_ms": 8.491,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 1880
+    },
+    "static": {
+      "node_type": "Aggregate",
+      "uses_index": false,
+      "actual_time_ms": 4.456,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 49
+    }
+  },
+  "group_by": {
+    "raw": {
+      "node_type": "Aggregate",
+      "uses_index": false,
+      "actual_time_ms": 17.174,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 1880
+    },
+    "view": {
+      "node_type": "Aggregate",
+      "uses_index": false,
+      "actual_time_ms": 21.133,
+      "row_estimate_error": 1.0,
+      "buffer_hits": 1888
+    },
+    "static": {
+      "node_type": "Aggregate",
+      "uses_index": false,
+      "actual_time_ms": 11.414,
+      "row_estimate_error": 0.0,
+      "buffer_hits": 88
+    }
+  }
+}

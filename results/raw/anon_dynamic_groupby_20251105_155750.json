@@ -1,0 +1,34 @@
+[
+  {
+    "experiment": "anon_dynamic_groupby",
+    "system": "dynamic",
+    "role": "masked_user",
+    "query_idx": 0,
+    "query": "-- Workload 3: Group By Aggregation\n-- Tests: Hash aggregate performance, impact of masked columns on grouping\n\n-- Adult: Income distribution by education\nSELECT education, income, COUNT(*) as cnt, AV",
+    "runs": 5,
+    "wall_clock_median_ms": 1758.2787760038627,
+    "wall_clock_mean_ms": 2148.83109240036,
+    "wall_clock_std_ms": 789.1238842180558,
+    "execution_median_ms": null,
+    "execution_mean_ms": null,
+    "planning_median_ms": 0,
+    "row_count": 12,
+    "explain_plan": null
+  },
+  {
+    "experiment": "anon_dynamic_groupby",
+    "system": "dynamic",
+    "role": "masked_user",
+    "query_idx": 1,
+    "query": "-- Healthcare: Condition distribution by gender\nSELECT medical_condition, gender, COUNT(*) as patient_count, AVG(billing_amount) as avg_billing\nFROM healthcare_raw_100000\nGROUP BY medical_condition, g",
+    "runs": 5,
+    "wall_clock_median_ms": 4156.853093998507,
+    "wall_clock_mean_ms": 4164.079312200192,
+    "wall_clock_std_ms": 112.57087252427141,
+    "execution_median_ms": null,
+    "execution_mean_ms": null,
+    "planning_median_ms": 0,
+    "row_count": 12,
+    "explain_plan": null
+  }
+]

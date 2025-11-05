@@ -1,0 +1,8 @@
+table,match_rate,unique_match_rate,false_match_rate,total_records,matched,unique_matched,false_matched,masking_method
+adult_raw_100000,1.0,0.011,0.0,1000,1000,11,0,raw
+adult_masked_view,0.055,0.0,0.0,1000,55,0,0,view_masked
+adult_static_masked,1.0,0.011,0.0,1000,1000,11,0,static_masked
+adult_mask_hash,0.472,0.011,0.014,1000,472,11,14,hash
+adult_mask_partial,0.472,0.011,0.014,1000,472,11,14,partial
+adult_mask_shuffle,0.472,0.011,0.014,1000,472,11,14,shuffle
+adult_mask_generalize,0.0,0.0,0.0,1000,0,0,0,generalize

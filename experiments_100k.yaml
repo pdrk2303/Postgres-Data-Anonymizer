@@ -1,0 +1,147 @@
+description: "Baseline experiments on 100k dataset"
+
+experiments:
+  # Baseline A: Native Postgres (no masking)
+  - name: baseline_raw_point_lookup
+    system: raw
+    workload: point_lookup.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+    cold_cache: false
+
+  - name: baseline_raw_range
+    system: raw
+    workload: range_query.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_raw_groupby
+    system: raw
+    workload: groupby_aggregate.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_raw_distinct
+    system: raw
+    workload: distinct_count.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_raw_topk
+    system: raw
+    workload: topk_analytic.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  # Baseline B: SQL Views (view-based masking)
+  - name: baseline_view_point_lookup
+    system: view
+    workload: point_lookup.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_view_range
+    system: view
+    workload: range_query.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_view_groupby
+    system: view
+    workload: groupby_aggregate.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_view_distinct
+    system: view
+    workload: distinct_count.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: baseline_view_topk
+    system: view
+    workload: topk_analytic.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  # System Under Test: Dynamic Masking (role-based)
+  - name: anon_dynamic_point_lookup
+    system: dynamic
+    workload: point_lookup.sql
+    role: masked_user
+    runs: 5
+    warmup: 3
+
+  - name: anon_dynamic_range
+    system: dynamic
+    workload: range_query.sql
+    role: masked_user
+    runs: 5
+    warmup: 3
+
+  - name: anon_dynamic_groupby
+    system: dynamic
+    workload: groupby_aggregate.sql
+    role: masked_user
+    runs: 5
+    warmup: 3
+
+  - name: anon_dynamic_distinct
+    system: dynamic
+    workload: distinct_count.sql
+    role: masked_user
+    runs: 5
+    warmup: 3
+
+  - name: anon_dynamic_topk
+    system: dynamic
+    workload: topk_analytic.sql
+    role: masked_user
+    runs: 5
+    warmup: 3
+
+  # System Under Test: Static Masking (pre-masked tables)
+  - name: anon_static_point_lookup
+    system: static
+    workload: point_lookup.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: anon_static_range
+    system: static
+    workload: range_query.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: anon_static_groupby
+    system: static
+    workload: groupby_aggregate.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: anon_static_distinct
+    system: static
+    workload: distinct_count.sql
+    role: postgres
+    runs: 5
+    warmup: 3
+
+  - name: anon_static_topk
+    system: static
+    workload: topk_analytic.sql
+    role: postgres
+    runs: 5
+    warmup: 3

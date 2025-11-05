@@ -1,0 +1,23 @@
+{
+  "adult_static_masked": {
+    "total_size": "16 MB",
+    "table_size": "15 MB",
+    "index_size": "1416 kB",
+    "total_bytes": 16703488,
+    "is_view": false
+  },
+  "healthcare_view_masked": {
+    "total_size": "0 bytes (view)",
+    "table_size": "0 bytes (view)",
+    "index_size": "0 bytes (view)",
+    "total_bytes": 0,
+    "is_view": true
+  },
+  "healthcare_static_masked": {
+    "total_size": "17 MB",
+    "table_size": "16 MB",
+    "index_size": "728 kB",
+    "total_bytes": 17743872,
+    "is_view": false
+  }
+}
