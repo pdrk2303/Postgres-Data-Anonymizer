@@ -1,4 +1,3 @@
--- Join-heavy OLAP (self-join for demonstration)
 EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)
 SELECT 
     a.education,
