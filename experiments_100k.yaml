@@ -1,7 +1,7 @@
 description: "Baseline experiments on 100k dataset"
 
 experiments:
-  # Baseline A: Native Postgres (no masking)
+  # Baseline A: Native Postgres
   - name: baseline_raw_point_lookup
     system: raw
     workload: point_lookup.sql
@@ -38,7 +38,7 @@ experiments:
     runs: 5
     warmup: 3
 
-  # Baseline B: SQL Views (view-based masking)
+  # Baseline B: SQL Views
   - name: baseline_view_point_lookup
     system: view
     workload: point_lookup.sql
@@ -74,7 +74,7 @@ experiments:
     runs: 5
     warmup: 3
 
-  # System Under Test: Dynamic Masking (role-based)
+  # System Under Test: Dynamic Masking
   - name: anon_dynamic_point_lookup
     system: dynamic
     workload: point_lookup.sql
@@ -110,7 +110,7 @@ experiments:
     runs: 5
     warmup: 3
 
-  # System Under Test: Static Masking (pre-masked tables)
+  # System Under Test: Static Masking
   - name: anon_static_point_lookup
     system: static
     workload: point_lookup.sql
