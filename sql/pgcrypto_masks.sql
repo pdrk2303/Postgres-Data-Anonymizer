@@ -1,4 +1,3 @@
--- Format-Preserving Hash (deterministic, preserves length)
 CREATE OR REPLACE FUNCTION fpe_hash(input TEXT, key TEXT DEFAULT 'fpe-key')
 RETURNS TEXT AS $$
 DECLARE
@@ -15,7 +14,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
--- Surrogate Key Mapping Table
 CREATE TABLE IF NOT EXISTS surrogate_mapping (
     original_value TEXT PRIMARY KEY,
     surrogate_value TEXT UNIQUE,
@@ -41,7 +39,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Laplace Noise Addition (for DP simulation)
 CREATE OR REPLACE FUNCTION add_laplace_noise(value NUMERIC, epsilon NUMERIC DEFAULT 1.0, sensitivity NUMERIC DEFAULT 1.0)
 RETURNS NUMERIC AS $$
 DECLARE

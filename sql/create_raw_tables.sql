@@ -1,7 +1,5 @@
--- Baseline A: Native Postgres tables (no masking)
--- These are your ground truth tables
+-- Baseline A: Native Postgres tables 
 
--- Adult Census table
 DROP TABLE IF EXISTS adult_raw CASCADE;
 CREATE TABLE adult_raw (
     id SERIAL PRIMARY KEY,
@@ -22,7 +20,6 @@ CREATE TABLE adult_raw (
     income TEXT
 );
 
--- Healthcare table
 DROP TABLE IF EXISTS healthcare_raw CASCADE;
 CREATE TABLE healthcare_raw (
     id SERIAL PRIMARY KEY,
@@ -43,11 +40,9 @@ CREATE TABLE healthcare_raw (
     test_results TEXT
 );
 
--- Grant permissions
 GRANT SELECT ON adult_raw TO analyst, masked_user;
 GRANT SELECT ON healthcare_raw TO analyst, masked_user;
 
--- Create indexes for baseline performance
 CREATE INDEX idx_adult_age ON adult_raw(age);
 CREATE INDEX idx_adult_education ON adult_raw(education);
 CREATE INDEX idx_healthcare_age ON healthcare_raw(age);
