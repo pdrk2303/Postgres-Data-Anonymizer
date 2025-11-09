@@ -50,11 +50,11 @@ Download these datasets and place in `data/raw` directory:
 
 1. **Adult Census Income**  
    https://www.kaggle.com/datasets/uciml/adult-census-income  
-   → Save as `data/adult_census.csv`
+   → Save as `data/raw/adult_census.csv`
 
 2. **Healthcare Dataset**  
    https://www.kaggle.com/datasets/prasad22/healthcare-dataset  
-   → Save as `data/healthcare_dataset.csv`
+   → Save as `data/raw/healthcare_dataset.csv`
 
 ### 3. Start PostgreSQL with Anonymizer Extension
 ```bash
@@ -108,7 +108,7 @@ postgres-anon-benchmark/
 └── README.md
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Docker container won't start
 ```bash
