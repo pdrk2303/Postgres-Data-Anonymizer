@@ -264,9 +264,9 @@ def compare_masking_functions():
     summary_df.to_latex(output_dir / 'masking_function_summary.tex', index=False)
     
     print(f"✓ Results saved to {output_dir}")
-    print(f"  - masking_function_comparison.csv (full)")
-    print(f"  - masking_function_summary.csv (for paper)")
-    print(f"  - masking_function_summary.tex (LaTeX table)")
+    print(f"  - masking_function_comparison.csv")
+    print(f"  - masking_function_summary.csv")
+    print(f"  - masking_function_summary.tex")
 
 if __name__ == '__main__':
     compare_masking_functions()
