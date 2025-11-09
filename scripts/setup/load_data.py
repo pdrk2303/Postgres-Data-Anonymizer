@@ -10,9 +10,7 @@ class DataLoader:
         self.cursor = self.conn.cursor()
     
     def create_schema_adult_census(self, table_name: str):
-        """Create schema for adult census dataset"""
-        # self.cursor.execute(f"DROP TABLE IF EXISTS {table_name} CASCADE;")
-        # self.conn.commit()
+
         schema = f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY,
@@ -37,9 +35,7 @@ class DataLoader:
         self.conn.commit()
 
     def create_schema_healthcare_census(self, table_name: str):
-        """Create schema for adult census dataset"""
-        # self.cursor.execute(f"DROP TABLE IF EXISTS {table_name} CASCADE;")
-        # self.conn.commit()
+
         schema = f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
             id SERIAL PRIMARY KEY,
@@ -65,12 +61,10 @@ class DataLoader:
         self.conn.commit()
     
     def load_csv_copy(self, csv_path: str, table_name: str) -> float:
-        """Fast load using COPY command"""
         
         start = time.time()
 
         with open(csv_path, 'r', encoding='utf-8') as f:
-            # Skip header explicitly
             next(f)
             self.cursor.copy_expert(
                 f"COPY {table_name} FROM STDIN WITH CSV",
@@ -81,12 +75,10 @@ class DataLoader:
         return time.time() - start
     
     def truncate_table(self, table_name: str):
-        """Remove all data from table"""
         self.cursor.execute(f"TRUNCATE TABLE {table_name} CASCADE;")
         self.conn.commit()
     
     def create_indexes(self, table_name: str, index_config: Dict):
-        """Create indexes based on configuration"""
         for idx_name, idx_def in index_config.items():
             sql = f"CREATE INDEX IF NOT EXISTS {idx_name} ON {table_name} {idx_def};"
             self.cursor.execute(sql)
@@ -96,11 +88,9 @@ class DataLoader:
         self.cursor.close()
         self.conn.close()
 
-# Example usage
 if __name__ == '__main__':
     loader = DataLoader("postgresql://postgres:postgres@localhost:5432/benchmark")
     
-    # Create and load tables
     for size in [100_000, 1_000_000]:
         table_name = f"adult_raw_{size}"
         loader.create_schema_adult_census(table_name)

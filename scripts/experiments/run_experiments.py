@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-Run benchmarking experiments across baselines and system under test
-Collects: latency, EXPLAIN ANALYZE plans, pg_stat_statements metrics, storage sizes
-
-Usage: python scripts/run_experiments.py --config experiments_100k.yaml
-"""
-
 import psycopg2
 import psycopg2.extras
 import json
@@ -33,7 +26,6 @@ class BenchmarkRunner:
         self.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         
     def get_connection(self, role='postgres'):
-        """Get database connection for specific role"""
         db_config = DB_CONFIGS[role].copy()
         db_config.update({
             'host': 'localhost',
@@ -43,16 +35,11 @@ class BenchmarkRunner:
         return psycopg2.connect(**db_config)
     
     def clear_caches(self, conn):
-        """Clear PostgreSQL caches for cold-cache experiments"""
         cur = conn.cursor()
-        # Discard query cache
         cur.execute("DISCARD ALL")
-        # Request kernel to drop page cache (requires docker privileged mode)
-        # For now, we rely on DISCARD ALL and restarting queries
         cur.close()
     
     def warmup_query(self, conn, query, runs=3):
-        """Run query N times to warm up caches"""
         cur = conn.cursor()
         for _ in range(runs):
             cur.execute(query)
@@ -60,7 +47,6 @@ class BenchmarkRunner:
         cur.close()
     
     def run_query_with_explain(self, conn, query, role='postgres'):
-        """Execute query with EXPLAIN ANALYZE and return metrics"""
         cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         
         plan = None
@@ -68,7 +54,6 @@ class BenchmarkRunner:
         execution_time_db = 0
 
         if role != 'masked_user':
-            # Get execution plan (only for unmasked users)
             explain_query = f"EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) {query}"
             cur.execute(explain_query)
             plan_result = cur.fetchone()['QUERY PLAN'][0]
@@ -76,7 +61,6 @@ class BenchmarkRunner:
             execution_time_db = plan_result['Execution Time']
             planning_time_ms = plan_result['Planning Time']
         
-        # Measure wall-clock time (client-side)
         start = time.perf_counter()
         cur.execute(query)
         results = cur.fetchall()
@@ -93,10 +77,8 @@ class BenchmarkRunner:
         }
     
     def get_table_size(self, conn, table_name):
-        """Get table and index sizes (or note if view)"""
         cur = conn.cursor()
         
-        # Check if it's a view
         cur.execute(f"""
             SELECT relkind FROM pg_class WHERE relname = '{table_name}'
         """)
@@ -108,7 +90,7 @@ class BenchmarkRunner:
         
         relkind = rel_info[0]
         
-        if relkind == 'v':  # It's a view
+        if relkind == 'v':
             cur.close()
             return {
                 'total_size': '0 bytes (view)',
@@ -118,7 +100,6 @@ class BenchmarkRunner:
                 'is_view': True
             }
         
-        # It's a table - get actual size
         cur.execute(f"""
             SELECT 
                 pg_size_pretty(pg_total_relation_size('{table_name}')) as total_size,
@@ -140,9 +121,8 @@ class BenchmarkRunner:
         return None
     
     def run_experiment(self, exp_config):
-        """Run single experiment configuration"""
         exp_name = exp_config['name']
-        system_type = exp_config['system']  # 'raw', 'view', 'dynamic', 'static'
+        system_type = exp_config['system'] 
         workload_file = exp_config['workload']
         role = exp_config.get('role', 'postgres')
         num_runs = exp_config.get('runs', 5)
@@ -151,11 +131,9 @@ class BenchmarkRunner:
         
         print(f"\n>>> Running: {exp_name} (system={system_type}, role={role})")
         
-        # Load workload SQL
         with open(f'workloads/{workload_file}') as f:
             queries = [q.strip() for q in f.read().split(';') if q.strip()]
         
-        # Map system type to table name
         table_map = {
             'raw': {'adult': 'adult_raw_100000', 'healthcare': 'healthcare_raw_100000'},
             'view': {'adult': 'adult_masked_view', 'healthcare': 'healthcare_view_masked'},
@@ -168,7 +146,6 @@ class BenchmarkRunner:
         conn = self.get_connection(role)
         
         for query_idx, query_template in enumerate(queries):
-            # Replace table references based on system type
             query = query_template
             for dataset in ['adult', 'healthcare']:
                 if dataset in query_template.lower():
@@ -177,11 +154,9 @@ class BenchmarkRunner:
             
             print(f"  Query {query_idx + 1}/{len(queries)}: ", end='', flush=True)
             
-            # Warmup
             if not cold_cache:
                 self.warmup_query(conn, query, warmup_runs)
             
-            # Measured runs
             run_results = []
             for run in range(num_runs):
                 if cold_cache:
@@ -191,7 +166,6 @@ class BenchmarkRunner:
                 run_results.append(metrics)
                 print('.', end='', flush=True)
             
-            # Aggregate statistics
             wall_times = [r['wall_clock_ms'] for r in run_results]
 
             exec_times = [r['execution_time_ms'] for r in run_results if r['execution_time_ms'] is not None]
@@ -202,7 +176,7 @@ class BenchmarkRunner:
                 'system': system_type,
                 'role': role,
                 'query_idx': query_idx,
-                'query': query[:200],  # Truncate for readability
+                'query': query[:200], 
                 'runs': num_runs,
                 'wall_clock_median_ms': statistics.median(wall_times),
                 'wall_clock_mean_ms': statistics.mean(wall_times),
@@ -211,15 +185,14 @@ class BenchmarkRunner:
                 'execution_mean_ms': statistics.mean(exec_times) if exec_times else None,
                 'planning_median_ms': statistics.median(planning_times) if planning_times else None,
                 'row_count': run_results[0]['row_count'],
-                'explain_plan': run_results[0]['plan']  # Save one plan for analysis
+                'explain_plan': run_results[0]['plan']
             }
             
             results.append(result)
-            print(f" ✓ {result['wall_clock_median_ms']:.2f}ms")
+            print(f" {result['wall_clock_median_ms']:.2f}ms")
         
         conn.close()
         
-        # Save results
         output_file = self.results_dir / f'{exp_name}_{self.timestamp}.json'
         with open(output_file, 'w') as f:
             json.dump(results, f, indent=2, default=str)
@@ -228,7 +201,6 @@ class BenchmarkRunner:
         return results
     
     def collect_storage_metrics(self):
-        """Collect storage sizes for all tables/views"""
         print("\n>>> Collecting storage metrics...")
         
         conn = self.get_connection('postgres')
@@ -247,7 +219,6 @@ class BenchmarkRunner:
         
         conn.close()
         
-        # Save storage metrics
         output_file = self.results_dir / f'storage_metrics_{self.timestamp}.json'
         with open(output_file, 'w') as f:
             json.dump(storage_results, f, indent=2)
@@ -255,7 +226,6 @@ class BenchmarkRunner:
         return storage_results
     
     def run_all_experiments(self):
-        """Run all experiments defined in config"""
         print(f"=== Starting Benchmark Run ({self.timestamp}) ===")
         print(f"Config: {self.config.get('description', 'No description')}")
         
@@ -268,10 +238,8 @@ class BenchmarkRunner:
             except Exception as e:
                 print(f"  ✗ Error in {exp['name']}: {e}")
         
-        # Collect storage metrics
         storage_metrics = self.collect_storage_metrics()
         
-        # Save combined results
         summary_file = self.results_dir / f'summary_{self.timestamp}.json'
         with open(summary_file, 'w') as f:
             json.dump({
@@ -281,7 +249,7 @@ class BenchmarkRunner:
                 'timestamp': self.timestamp
             }, f, indent=2, default=str)
         
-        print(f"\n✓ All experiments complete! Summary: {summary_file}")
+        print(f"\nAll experiments complete! Summary: {summary_file}")
 
 def main():
     parser = argparse.ArgumentParser(description='Run PostgreSQL anonymizer benchmarks')

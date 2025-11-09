@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-"""
-Differential Privacy simulation using Laplace mechanism
-Compares DP-noised aggregates vs raw aggregates
-
-Why: postgresql_anonymizer doesn't provide formal DP guarantees.
-     This demonstrates what DP would look like and measures accuracy loss.
-"""
-
 import psycopg2
 import numpy as np
 import pandas as pd
@@ -52,7 +44,6 @@ def run_dp_aggregate_queries(conn, epsilon_values):
     
     results = []
     
-    # Query 1: COUNT by age bucket
     print("\n>>> Query 1: COUNT by age bucket")
     query1 = """
         SELECT (age / 10) * 10 as age_bucket, COUNT(*) as cnt
@@ -64,7 +55,6 @@ def run_dp_aggregate_queries(conn, epsilon_values):
     df1 = pd.read_sql(query1, conn)
     
     for epsilon in epsilon_values:
-        # Sensitivity = 1 (adding/removing one person changes count by at most 1)
         sensitivity = 1
         
         df1_noised = df1.copy()
@@ -72,7 +62,6 @@ def run_dp_aggregate_queries(conn, epsilon_values):
             lambda x: max(0, laplace_mechanism(x, sensitivity, epsilon))  # Clamp to non-negative
         )
         
-        # Calculate error metrics
         mae = np.mean(np.abs(df1_noised['cnt'] - df1_noised['cnt_noised']))
         rel_error = np.mean(np.abs(df1_noised['cnt'] - df1_noised['cnt_noised']) / df1_noised['cnt'])
         
@@ -87,7 +76,6 @@ def run_dp_aggregate_queries(conn, epsilon_values):
         
         print(f"  ε={epsilon}: MAE={mae:.2f}, RelError={rel_error*100:.1f}%")
     
-    # Query 2: AVG capital_gain by education
     print("\n>>> Query 2: AVG(capital_gain) by education")
     query2 = """
         SELECT education, AVG(capital_gain) as avg_gain, COUNT(*) as cnt
@@ -99,27 +87,21 @@ def run_dp_aggregate_queries(conn, epsilon_values):
     
     df2 = pd.read_sql(query2, conn)
     
-    # For AVG with bounded domain [0, max_capital_gain]
-    max_gain = 100000  # Assume capital gain bounded at 100k
+    max_gain = 100000 
     
     for epsilon in epsilon_values:
-        # Sensitivity for bounded average = 2 * range / n
-        # But we use global sensitivity approach: add noise to SUM and COUNT separately
         df2_noised = df2.copy()
         
-        # Noise SUM (sensitivity = max_gain)
         sum_noised = (df2['avg_gain'] * df2['cnt']).apply(
             lambda x: laplace_mechanism(x, max_gain, epsilon/2)  # Split epsilon budget
         )
         
-        # Noise COUNT (sensitivity = 1)
         cnt_noised = df2['cnt'].apply(
             lambda x: max(1, laplace_mechanism(x, 1, epsilon/2))  # Clamp to at least 1
         )
         
         df2_noised['avg_gain_noised'] = sum_noised / cnt_noised
         
-        # Calculate error
         mae = np.mean(np.abs(df2_noised['avg_gain'] - df2_noised['avg_gain_noised']))
         rel_error = np.mean(np.abs(df2_noised['avg_gain'] - df2_noised['avg_gain_noised']) / 
                            (df2_noised['avg_gain'] + 1))  # +1 to avoid div by zero
@@ -135,7 +117,6 @@ def run_dp_aggregate_queries(conn, epsilon_values):
         
         print(f"  ε={epsilon}: MAE={mae:.2f}, RelError={rel_error*100:.1f}%")
     
-    # Query 3: SUM hours_per_week by occupation (top 10)
     print("\n>>> Query 3: SUM(hours_per_week) by occupation")
     query3 = """
         SELECT occupation, SUM(hours_per_week) as total_hours
@@ -148,10 +129,9 @@ def run_dp_aggregate_queries(conn, epsilon_values):
     
     df3 = pd.read_sql(query3, conn)
     
-    max_hours = 100  # Max hours per week per person
+    max_hours = 100 
     
     for epsilon in epsilon_values:
-        # Sensitivity = max_hours (one person's contribution)
         sensitivity = max_hours
         
         df3_noised = df3.copy()
@@ -191,7 +171,6 @@ def main():
     
     conn.close()
     
-    # Save results
     output_dir = Path('results/raw')
     output_dir.mkdir(parents=True, exist_ok=True)
     
@@ -201,7 +180,6 @@ def main():
     
     print(f"\n✓ Results saved: {output_file}")
     
-    # Print summary table
     print("\n=== Summary: Accuracy vs Privacy ===")
     print(f"{'Query':<30} {'ε':<8} {'MAE':<12} {'Rel Error':<12}")
     print("-" * 65)

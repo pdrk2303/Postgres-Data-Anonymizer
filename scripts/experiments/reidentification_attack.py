@@ -1,14 +1,4 @@
 #!/usr/bin/env python3
-"""
-Simulate re-identification attack using quasi-identifiers
-Tests how well masking protects against linkage attacks
-
-Scenario: Attacker has external data with (age, education, sex, race)
-          Tries to link to masked database records
-
-Measures: Success rate of correct linkage for different masking methods
-"""
-
 import psycopg2
 import pandas as pd
 import numpy as np
@@ -25,10 +15,7 @@ DB_CONFIG = {
 }
 
 def create_external_dataset(conn, sample_size=1000):
-    """
-    Simulate external dataset attacker might have
-    Sample random records with quasi-identifiers
-    """
+
     print(f">>> Creating simulated external dataset ({sample_size} records)...")
     
     query = f"""
@@ -46,19 +33,12 @@ def create_external_dataset(conn, sample_size=1000):
     """
     
     df_external = pd.read_sql(query, conn)
-    print(f"  ✓ Created external dataset with {len(df_external)} records")
+    print(f" Created external dataset with {len(df_external)} records")
     
     return df_external
 
 def attempt_linkage(conn, external_df, target_table, quasi_identifiers):
-    """
-    Attempt to link external records to target table using quasi-identifiers
-    
-    Returns:
-        - match_rate: % of records correctly linked
-        - unique_match_rate: % of records with unique match
-        - false_match_rate: % of records incorrectly linked
-    """
+
     print(f"\n>>> Attempting linkage on: {target_table}")
     print(f"    Using quasi-identifiers: {quasi_identifiers}")
     
@@ -141,20 +121,15 @@ def attempt_linkage(conn, external_df, target_table, quasi_identifiers):
     }
 
 def run_reidentification_experiments():
-    """
-    Run re-identification attacks against different masked tables
-    """
+
     print("=== Re-identification Attack Simulation ===\n")
     
     conn = psycopg2.connect(**DB_CONFIG)
     
-    # Create external dataset (attacker's auxiliary data)
     external_df = create_external_dataset(conn, sample_size=1000)
     
-    # Define quasi-identifiers (attributes that could identify individuals)
     quasi_identifiers = ['age', 'education', 'sex', 'race']
     
-    # Tables to attack
     target_tables = {
         'raw': 'adult_raw_100000',
         'view_masked': 'adult_masked_view',
@@ -185,7 +160,6 @@ def run_reidentification_experiments():
     
     conn.close()
     
-    # Save results
     output_dir = Path('results/raw')
     output_dir.mkdir(parents=True, exist_ok=True)
     
@@ -193,7 +167,6 @@ def run_reidentification_experiments():
     df_results.to_csv(output_dir / 'reidentification_results.csv', index=False)
     df_results.to_json(output_dir / 'reidentification_results.json', orient='records', indent=2)
     
-    # Print summary
     print("\n" + "="*70)
     print("Re-identification Success Rates")
     print("="*70)
@@ -209,7 +182,6 @@ def run_reidentification_experiments():
     print("="*70)
     print("\n✓ Results saved to results/raw/reidentification_results.csv")
     
-    # Interpretation
     print("\n>>> Interpretation:")
     print("  - High match rate = Poor privacy protection")
     print("  - Low match rate = Better privacy protection")

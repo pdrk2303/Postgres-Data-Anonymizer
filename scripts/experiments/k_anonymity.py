@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-"""
-Implement k-anonymity through generalization and suppression
-Creates preprocessed tables satisfying k={2,5,10,20}
-Measures utility loss: MAE, relative error, and query latency
-
-Why: postgresql_anonymizer doesn't provide k-anonymity natively.
-     This demonstrates the manual effort required and measures utility loss.
-"""
 
 import psycopg2
 import pandas as pd
@@ -26,11 +18,9 @@ DB_CONFIG = {
 }
 
 def generalize_age(age, granularity=5):
-    """Generalize age to buckets"""
     return (age // granularity) * granularity
 
 def generalize_education(education):
-    """Map education to broader categories"""
     mapping = {
         'Preschool': 'Primary',
         '1st-4th': 'Primary',
@@ -52,10 +42,7 @@ def generalize_education(education):
     return mapping.get(education.strip(), 'Other')
 
 def check_k_anonymity(df, quasi_identifiers, k):
-    """
-    Check if dataframe satisfies k-anonymity
-    Returns: (satisfies_k, min_group_size, violating_groups)
-    """
+
     grouped = df.groupby(quasi_identifiers).size()
     min_size = grouped.min()
     violations = grouped[grouped < k]
@@ -63,44 +50,34 @@ def check_k_anonymity(df, quasi_identifiers, k):
     return min_size >= k, min_size, len(violations)
 
 def suppress_small_groups(df, quasi_identifiers, k):
-    """Remove rows that belong to groups smaller than k"""
     group_sizes = df.groupby(quasi_identifiers).size()
     valid_groups = group_sizes[group_sizes >= k].index
     
-    # Create boolean mask for valid rows
     mask = df.set_index(quasi_identifiers).index.isin(valid_groups)
     suppressed_df = df[mask].reset_index(drop=True)
     
     return suppressed_df, len(df) - len(suppressed_df)
 
 def measure_query_latency(conn, query, runs=5):
-    """Measure query execution time"""
     cur = conn.cursor()
     
-    # Warmup
     for _ in range(2):
         cur.execute(query)
         cur.fetchall()
     
-    # Measure
     times = []
     for _ in range(runs):
         start = time.perf_counter()
         cur.execute(query)
         result = cur.fetchall()
         end = time.perf_counter()
-        times.append((end - start) * 1000)  # Convert to ms
+        times.append((end - start) * 1000) 
     
     cur.close()
     return statistics.median(times), result
 
 def compute_aggregate_metrics(conn, original_table, kanon_table):
-    """
-    Compare aggregate query results between original and k-anonymous tables
-    Returns: MAE, relative error, latency overhead
-    """
-    
-    # Test queries for accuracy measurement
+
     queries = {
         'count_by_education': """
             SELECT education_generalized, COUNT(*) as cnt
@@ -125,28 +102,22 @@ def compute_aggregate_metrics(conn, original_table, kanon_table):
     results = {}
     
     for query_name, query_template in queries.items():
-        # Query original table
         original_query = query_template.format(table=original_table)
         orig_latency, orig_result = measure_query_latency(conn, original_query)
         
-        # Query k-anonymous table
         kanon_query = query_template.format(table=kanon_table)
         kanon_latency, kanon_result = measure_query_latency(conn, kanon_query)
         
-        # Compute MAE
         if orig_result and kanon_result:
-            # Convert to dicts for comparison
             orig_dict = {row[0]: float(row[1]) for row in orig_result}
             kanon_dict = {row[0]: float(row[1]) for row in kanon_result}
             
-            # Compute absolute errors
             errors = []
             for key in orig_dict.keys():
                 if key in kanon_dict:
                     error = abs(orig_dict[key] - kanon_dict[key])
                     errors.append(error)
                     
-                    # Also compute relative error
                     if orig_dict[key] > 0:
                         rel_error = error / orig_dict[key]
                     else:
@@ -164,7 +135,6 @@ def compute_aggregate_metrics(conn, original_table, kanon_table):
                 'latency_overhead_pct': ((kanon_latency - orig_latency) / orig_latency * 100) if orig_latency > 0 else 0
             }
     
-    # Aggregate across queries
     avg_mae = sum([r['mae'] for r in results.values()]) / len(results)
     avg_rel_error = sum([r['relative_error'] for r in results.values()]) / len(results)
     avg_latency_overhead = sum([r['latency_overhead_pct'] for r in results.values()]) / len(results)
@@ -179,47 +149,35 @@ def compute_aggregate_metrics(conn, original_table, kanon_table):
     }
 
 def create_k_anonymous_table(conn, k_value, age_bucket=5):
-    """
-    Create k-anonymous version of adult_raw table
-    Returns: number of suppressed rows, utility metrics
-    """
+
     print(f"\n>>> Creating k-anonymous table (k={k_value}, age_bucket={age_bucket})...")
     
-    # Read data
     query = "SELECT * FROM adult_raw_100000"
     df = pd.read_sql(query, conn)
     
     original_count = len(df)
     print(f"  Original rows: {original_count}")
     
-    # Apply generalizations
     df['age_generalized'] = df['age'].apply(lambda x: generalize_age(x, age_bucket))
     df['education_generalized'] = df['education'].apply(generalize_education)
     
-    # Define quasi-identifiers (attributes that could identify individuals)
     quasi_identifiers = ['age_generalized', 'education_generalized', 'sex', 'race']
     
-    # Check initial k-anonymity
     satisfies, min_size, violations = check_k_anonymity(df, quasi_identifiers, k_value)
     print(f"  Before suppression: min_group={min_size}, violations={violations}")
     
-    # Suppress small groups
     df_suppressed, suppressed_count = suppress_small_groups(df, quasi_identifiers, k_value)
     
-    # Verify k-anonymity
     satisfies, min_size, violations = check_k_anonymity(df_suppressed, quasi_identifiers, k_value)
     print(f"  After suppression: satisfies_k={satisfies}, min_group={min_size}")
     print(f"  Suppressed {suppressed_count} rows ({suppressed_count/original_count*100:.1f}%)")
     
-    # Create table in database
     table_name = f'adult_kanon_k{k_value}'
     
     cur = conn.cursor()
     
-    # Drop if exists
     cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     
-    # Create table
     cur.execute(f"""
         CREATE TABLE {table_name} (
             id SERIAL PRIMARY KEY,
@@ -239,7 +197,6 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
         )
     """)
     
-    # Insert data
     for idx, row in df_suppressed.iterrows():
         cur.execute(f"""
             INSERT INTO {table_name} 
@@ -268,12 +225,10 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
     
     conn.commit()
     
-    # Create indexes
     cur.execute(f"CREATE INDEX idx_{table_name}_age ON {table_name}(age_generalized)")
     cur.execute(f"CREATE INDEX idx_{table_name}_edu ON {table_name}(education_generalized)")
-    conn.commit()  # commit before vacuum
+    conn.commit() 
 
-    # VACUUM must run outside a transaction
     conn.autocommit = True
     cur.execute(f"VACUUM ANALYZE {table_name}")
     conn.autocommit = False
@@ -281,14 +236,12 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
     conn.commit()
     cur.close()
     
-    print(f"  ✓ Created table: {table_name}")
+    print(f" Created table: {table_name}")
     
-    # Create comparison table with generalized columns for fair comparison
     comparison_table = f'adult_raw_generalized_k{k_value}'
     cur = conn.cursor()
     cur.execute(f"DROP TABLE IF EXISTS {comparison_table}")
     
-    # Create generalized version of original (without suppression) for comparison
     cur.execute(f"""
         CREATE TABLE {comparison_table} AS
         SELECT 
@@ -308,7 +261,6 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
     conn.commit()
     cur.close()
     
-    # Calculate utility metrics
     print(f"  Measuring utility metrics...")
     metrics = compute_aggregate_metrics(conn, comparison_table, table_name)
     
@@ -400,10 +352,7 @@ def generalize_education(education):
     return mapping.get(education.strip(), 'Other')
 
 def check_k_anonymity(df, quasi_identifiers, k):
-    """
-    Check if dataframe satisfies k-anonymity
-    Returns: (satisfies_k, min_group_size, violating_groups)
-    """
+
     grouped = df.groupby(quasi_identifiers).size()
     min_size = grouped.min()
     violations = grouped[grouped < k]
@@ -411,58 +360,44 @@ def check_k_anonymity(df, quasi_identifiers, k):
     return min_size >= k, min_size, len(violations)
 
 def suppress_small_groups(df, quasi_identifiers, k):
-    """Remove rows that belong to groups smaller than k"""
     group_sizes = df.groupby(quasi_identifiers).size()
     valid_groups = group_sizes[group_sizes >= k].index
     
-    # Create boolean mask for valid rows
     mask = df.set_index(quasi_identifiers).index.isin(valid_groups)
     suppressed_df = df[mask].reset_index(drop=True)
     
     return suppressed_df, len(df) - len(suppressed_df)
 
 def create_k_anonymous_table(conn, k_value, age_bucket=5):
-    """
-    Create k-anonymous version of adult_raw table
-    Returns: number of suppressed rows, utility metrics
-    """
+
     print(f"\n>>> Creating k-anonymous table (k={k_value}, age_bucket={age_bucket})...")
     
-    # Read data
     query = "SELECT * FROM adult_raw_100000"
     df = pd.read_sql(query, conn)
     
     original_count = len(df)
     print(f"  Original rows: {original_count}")
     
-    # Apply generalizations
     df['age_generalized'] = df['age'].apply(lambda x: generalize_age(x, age_bucket))
     df['education_generalized'] = df['education'].apply(generalize_education)
     
-    # Define quasi-identifiers (attributes that could identify individuals)
     quasi_identifiers = ['age_generalized', 'education_generalized', 'sex', 'race']
     
-    # Check initial k-anonymity
     satisfies, min_size, violations = check_k_anonymity(df, quasi_identifiers, k_value)
     print(f"  Before suppression: min_group={min_size}, violations={violations}")
     
-    # Suppress small groups
     df_suppressed, suppressed_count = suppress_small_groups(df, quasi_identifiers, k_value)
     
-    # Verify k-anonymity
     satisfies, min_size, violations = check_k_anonymity(df_suppressed, quasi_identifiers, k_value)
     print(f"  After suppression: satisfies_k={satisfies}, min_group={min_size}")
     print(f"  Suppressed {suppressed_count} rows ({suppressed_count/original_count*100:.1f}%)")
     
-    # Create table in database
     table_name = f'adult_kanon_k{k_value}'
     
     cur = conn.cursor()
     
-    # Drop if exists
     cur.execute(f"DROP TABLE IF EXISTS {table_name}")
     
-    # Create table
     cur.execute(f"""
         CREATE TABLE {table_name} (
             id SERIAL PRIMARY KEY,
@@ -482,7 +417,6 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
         )
     """)
     
-    # Insert data
     for idx, row in df_suppressed.iterrows():
         cur.execute(f"""
             INSERT INTO {table_name} 
@@ -511,21 +445,18 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
     
     conn.commit()
     
-    # Create indexes
     cur.execute(f"CREATE INDEX idx_{table_name}_age ON {table_name}(age_generalized)")
     cur.execute(f"CREATE INDEX idx_{table_name}_edu ON {table_name}(education_generalized)")
-    conn.commit()  # commit before vacuum
+    conn.commit() 
 
-    # VACUUM must run outside a transaction
     conn.autocommit = True
     cur.execute(f"VACUUM ANALYZE {table_name}")
     conn.autocommit = False
     conn.commit()
     cur.close()
     
-    print(f"  ✓ Created table: {table_name}")
+    print(f" Created table: {table_name}")
     
-    # Calculate utility metrics
     metrics = calculate_utility_metrics(df, df_suppressed, quasi_identifiers)
     
     return {
@@ -539,9 +470,7 @@ def create_k_anonymous_table(conn, k_value, age_bucket=5):
     }
 
 def calculate_utility_metrics(df_original, df_kanon, quasi_identifiers):
-    """Calculate information loss metrics"""
-    
-    # Cardinality reduction
+
     original_unique = {qi: df_original[qi].nunique() for qi in quasi_identifiers}
     kanon_unique = {qi: df_kanon[qi].nunique() for qi in quasi_identifiers}
     
@@ -575,7 +504,6 @@ def main():
     
     conn.close()
     
-    # Print summary
     print("\n=== Summary ===")
     print(f"{'k':<5} {'Table':<20} {'Rows':<10} {'Suppressed':<12} {'Rate':<8}")
     print("-" * 60)

@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""
-Compare different masking functions across dimensions:
-- Performance (query latency)
-- Storage overhead
-- Utility preservation (cardinality, distributions)
-- Index compatibility
-
-Produces a comparison table for the paper
-"""
 
 import psycopg2
 import pandas as pd
@@ -48,15 +39,12 @@ TEST_QUERIES = {
 }
 
 def measure_query_latency(conn, query, runs=5, warmup=2):
-    """Measure query execution time"""
     cur = conn.cursor()
     
-    # Warmup
     for _ in range(warmup):
         cur.execute(query)
         cur.fetchall()
     
-    # Measure
     times = []
     for _ in range(runs):
         start = time.perf_counter()
@@ -69,7 +57,6 @@ def measure_query_latency(conn, query, runs=5, warmup=2):
     return statistics.median(times)
 
 def get_table_storage(conn, table_name):
-    """Get storage sizes"""
     cur = conn.cursor()
     cur.execute(f"""
         SELECT 
@@ -89,17 +76,12 @@ def get_table_storage(conn, table_name):
     return None
 
 def calculate_cardinality_preservation(conn, original_table, masked_table, column):
-    """
-    Calculate cardinality preservation ratio
-    Ratio = unique_masked / unique_original
-    """
+
     cur = conn.cursor()
     
-    # Original cardinality
     cur.execute(f"SELECT COUNT(DISTINCT {column}) FROM {original_table}")
     original_cardinality = cur.fetchone()[0]
     
-    # Masked cardinality
     cur.execute(f"SELECT COUNT(DISTINCT {column}) FROM {masked_table}")
     masked_cardinality = cur.fetchone()[0]
     
@@ -111,13 +93,9 @@ def calculate_cardinality_preservation(conn, original_table, masked_table, colum
     return masked_cardinality / original_cardinality
 
 def calculate_distribution_distance(conn, original_table, masked_table, column):
-    """
-    Calculate Jensen-Shannon divergence between original and masked distributions
-    Lower is better (0 = identical distributions)
-    """
+
     cur = conn.cursor()
     
-    # Get original distribution
     cur.execute(f"""
         SELECT {column}, COUNT(*) as cnt
         FROM {original_table}
@@ -127,7 +105,6 @@ def calculate_distribution_distance(conn, original_table, masked_table, column):
     """)
     original_dist = dict(cur.fetchall())
     
-    # Get masked distribution
     cur.execute(f"""
         SELECT {column}, COUNT(*) as cnt
         FROM {masked_table}
@@ -139,17 +116,14 @@ def calculate_distribution_distance(conn, original_table, masked_table, column):
     
     cur.close()
     
-    # Handle different value sets (e.g., fake data has different values)
     all_values = set(original_dist.keys()) | set(masked_dist.keys())
     
-    # Create probability distributions
     total_original = sum(original_dist.values())
     total_masked = sum(masked_dist.values())
     
     p = [original_dist.get(v, 0) / total_original for v in sorted(all_values)]
     q = [masked_dist.get(v, 0) / total_masked for v in sorted(all_values)]
     
-    # Calculate JS divergence
     try:
         js_div = jensenshannon(p, q)
         return float(js_div)
@@ -157,13 +131,9 @@ def calculate_distribution_distance(conn, original_table, masked_table, column):
         return float('nan')
 
 def test_index_compatibility(conn, table_name, column):
-    """
-    Test if index is actually used in queries
-    Returns: True if index scan is used
-    """
+
     cur = conn.cursor()
     
-    # Run EXPLAIN
     query = f"""
         EXPLAIN (FORMAT JSON) 
         SELECT * FROM {table_name} WHERE {column} = 'some_value'
@@ -173,7 +143,6 @@ def test_index_compatibility(conn, table_name, column):
         cur.execute(query)
         plan = cur.fetchone()[0][0]
         
-        # Check if plan uses index scan
         plan_str = json.dumps(plan).lower()
         uses_index = 'index scan' in plan_str or 'index only scan' in plan_str
         
@@ -184,7 +153,6 @@ def test_index_compatibility(conn, table_name, column):
         return False
 
 def compare_masking_functions():
-    """Main comparison function"""
     print("=== Comparing Masking Functions ===\n")
     
     conn = psycopg2.connect(**DB_CONFIG)
@@ -201,7 +169,6 @@ def compare_masking_functions():
             'table': table_name
         }
         
-        # 1. Performance metrics
         print("  - Measuring query latency...")
         for query_name, query_template in TEST_QUERIES.items():
             query = query_template.format(table=table_name)
@@ -212,7 +179,6 @@ def compare_masking_functions():
                 print(f"    Warning: {query_name} failed: {e}")
                 result[f'latency_{query_name}_ms'] = None
         
-        # 2. Storage overhead
         print("  - Measuring storage...")
         storage = get_table_storage(conn, table_name)
         if storage:
@@ -220,11 +186,9 @@ def compare_masking_functions():
             result['storage_table_mb'] = round(storage['table_mb'], 2)
             result['storage_index_mb'] = round(storage['index_mb'], 2)
         
-        # 3. Utility metrics (skip for original)
         if mask_name != 'original':
             print("  - Calculating utility preservation...")
             
-            # Cardinality preservation for occupation
             try:
                 card_occupation = calculate_cardinality_preservation(
                     conn, original_table, table_name, 'occupation'
@@ -233,7 +197,6 @@ def compare_masking_functions():
             except:
                 result['cardinality_ratio_occupation'] = None
             
-            # Distribution similarity for occupation
             try:
                 js_div = calculate_distribution_distance(
                     conn, original_table, table_name, 'occupation'
@@ -242,7 +205,6 @@ def compare_masking_functions():
             except:
                 result['js_divergence_occupation'] = None
             
-            # Index compatibility
             try:
                 uses_index = test_index_compatibility(conn, table_name, 'occupation')
                 result['index_compatible'] = 'Yes' if uses_index else 'No'
@@ -254,10 +216,8 @@ def compare_masking_functions():
     
     conn.close()
     
-    # Create DataFrame for analysis
     df_results = pd.DataFrame(results)
     
-    # Calculate overhead vs original
     original_latencies = df_results[df_results['masking_function'] == 'original'].iloc[0]
     
     for query_name in ['point_lookup', 'range_scan', 'group_by', 'join_aggregate']:
@@ -268,7 +228,6 @@ def compare_masking_functions():
                 (df_results[col_name] - baseline) / baseline * 100
             ).round(1)
     
-    # Save results
     output_dir = Path('results/raw')
     output_dir.mkdir(parents=True, exist_ok=True)
     
@@ -277,7 +236,6 @@ def compare_masking_functions():
     
     print("\n=== Summary Table ===\n")
     
-    # Create summary table for paper
     summary_cols = [
         'masking_function',
         'latency_group_by_ms',
@@ -302,7 +260,6 @@ def compare_masking_functions():
     print(summary_df.to_string(index=False))
     print("\n")
     
-    # Save formatted summary
     summary_df.to_csv(output_dir / 'masking_function_summary.csv', index=False)
     summary_df.to_latex(output_dir / 'masking_function_summary.tex', index=False)
     

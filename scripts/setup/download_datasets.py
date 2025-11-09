@@ -5,7 +5,6 @@ import requests
 from tqdm import tqdm
 
 def download_adult_census():
-    """Download Adult Census Income dataset"""
     url = "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
     columns = ['age', 'workclass', 'fnlwgt', 'education', 'education_num',
                'marital_status', 'occupation', 'relationship', 'race', 'sex',
@@ -17,13 +16,11 @@ def download_adult_census():
     return df
 
 def download_healthcare():
-    """Instructions for healthcare dataset"""
     print("Download healthcare dataset from:")
     print("https://www.kaggle.com/datasets/prasad22/healthcare-dataset")
     print("Place in data/raw/healthcare.csv")
 
 def generate_high_cardinality_synthetic(n_rows=100000):
-    """Generate high-cardinality synthetic dataset"""
     from faker import Faker
     import uuid
     from datetime import datetime, timedelta

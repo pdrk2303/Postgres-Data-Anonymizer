@@ -11,27 +11,20 @@ class SyntheticDataGenerator:
         np.random.seed(seed)
     
     def scale_adult_census(self, base_df: pd.DataFrame, target_rows: int) -> pd.DataFrame:
-        """Scale adult census maintaining distributions"""
         if target_rows <= len(base_df):
             sampled = base_df.sample(n=target_rows, random_state=42).reset_index(drop=True)
-            # Reassign IDs to be sequential
             sampled['id'] = range(1, target_rows + 1)
             return sampled
         
-        # Calculate scaling factor
         scale_factor = target_rows / len(base_df)
         
-        # Replicate and add noise
         n_copies = int(np.ceil(scale_factor))
         scaled_df = pd.concat([base_df] * n_copies, ignore_index=True)
         
-        # Add synthetic variation
         scaled_df = self._add_noise_to_dataframe(scaled_df, base_df)
         
-        # Sample to exact size
         scaled_df = scaled_df.sample(n=target_rows, random_state=42).reset_index(drop=True)
         
-        # CRITICAL FIX: Reassign unique sequential IDs
         scaled_df['id'] = range(1, target_rows + 1)
         
         return scaled_df
@@ -40,7 +33,6 @@ class SyntheticDataGenerator:
         """Add realistic noise while preserving distributions"""
         df = df.copy()
         
-        # Numeric columns: add Gaussian noise (EXCEPT 'id')
         numeric_cols = df.select_dtypes(include=[np.number]).columns
         numeric_cols = [col for col in numeric_cols if col != 'id']  # Exclude 'id'
         
@@ -52,7 +44,6 @@ class SyntheticDataGenerator:
             if pd.api.types.is_integer_dtype(base_df[col]):
                 df[col] = df[col].round().astype(int)
         
-        # Categorical columns: occasional random replacement
         categorical_cols = df.select_dtypes(include=['object']).columns
         for col in categorical_cols:
             unique_vals = base_df[col].unique()
@@ -62,7 +53,6 @@ class SyntheticDataGenerator:
         return df
     
     def generate_quasi_identifiers(self, n_rows: int) -> pd.DataFrame:
-        """Generate dataset with known quasi-identifiers for re-identification tests"""
         data = {
             'user_id': range(1, n_rows + 1),
             'zip_code': [self.fake.zipcode()[:5] for _ in range(n_rows)],
@@ -78,7 +68,6 @@ class SyntheticDataGenerator:
 if __name__ == '__main__':
     generator = SyntheticDataGenerator()
     
-    # Scale adult census
     base_adult = pd.read_csv('data/raw/adult_census.csv')
     for size in [100_000, 1_000_000]:
         scaled = generator.scale_adult_census(base_adult, size)
