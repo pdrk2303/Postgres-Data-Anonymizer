@@ -1,4 +1,5 @@
 -- View-based masking (Baseline B)
+DROP VIEW IF EXISTS adult_masked_view CASCADE;
 CREATE OR REPLACE VIEW adult_masked_view AS
 SELECT 
     id,
@@ -38,6 +39,7 @@ SELECT
 FROM adult_raw_100000;
 
 -- Materialized view variant (for comparison)
+DROP MATERIALIZED VIEW IF EXISTS adult_masked_matview CASCADE;
 CREATE MATERIALIZED VIEW adult_masked_matview AS
 SELECT * FROM adult_masked_view;
 
@@ -69,6 +71,7 @@ SELECT
     test_results
 FROM healthcare_raw_100000;
 
+DROP MATERIALIZED VIEW IF EXISTS healthcare_masked_matview CASCADE;
 CREATE MATERIALIZED VIEW healthcare_masked_matview AS
 SELECT * FROM healthcare_view_masked;
 
