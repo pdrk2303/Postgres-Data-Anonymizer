@@ -79,14 +79,14 @@ if __name__ == '__main__':
     generator = SyntheticDataGenerator()
     
     # Scale adult census
-    base_adult = pd.read_csv('data/processed/adult_census.csv')
-    for size in [100_000, 1_000_000, 5_000_000]:
+    base_adult = pd.read_csv('data/raw/adult_census.csv')
+    for size in [100_000, 1_000_000]:
         scaled = generator.scale_adult_census(base_adult, size)
         scaled.to_csv(f'data/processed/adult_{size}.csv', index=False)
         print(f"Generated adult_{size}.csv with {len(scaled)} rows and {scaled['id'].nunique()} unique IDs")
 
-    base_healthcare = pd.read_csv('data/processed/healthcare_dataset.csv')
-    for size in [100_000, 1_000_000, 5_000_000]:
+    base_healthcare = pd.read_csv('data/raw/healthcare_dataset.csv')
+    for size in [100_000, 1_000_000]:
         scaled = generator.scale_adult_census(base_healthcare, size)
         scaled.to_csv(f'data/processed/healthcare_{size}.csv', index=False)
         print(f"Generated healthcare_{size}.csv with {len(scaled)} rows and {scaled['id'].nunique()} unique IDs")

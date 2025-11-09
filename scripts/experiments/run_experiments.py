@@ -234,8 +234,8 @@ class BenchmarkRunner:
         conn = self.get_connection('postgres')
         
         tables = [
-            'adult_raw', 'adult_view_masked', 'adult_static_masked',
-            'healthcare_raw', 'healthcare_view_masked', 'healthcare_static_masked'
+            'adult_raw_100000', 'adult_view_masked', 'adult_static_masked',
+            'healthcare_raw_100000', 'healthcare_view_masked', 'healthcare_static_masked'
         ]
         
         storage_results = {}

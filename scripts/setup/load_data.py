@@ -101,14 +101,14 @@ if __name__ == '__main__':
     loader = DataLoader("postgresql://postgres:postgres@localhost:5432/benchmark")
     
     # Create and load tables
-    # for size in [100_000, 1_000_000, 5_000_000]:
-    #     table_name = f"adult_raw_{size}"
-    #     loader.create_schema_adult_census(table_name)
-    #     loader.truncate_table(table_name)
-    #     load_time = loader.load_csv_copy(f'data/processed/adult_{size}.csv', table_name)
-    #     print(f"Loaded {table_name} in {load_time:.2f}s")
+    for size in [100_000, 1_000_000]:
+        table_name = f"adult_raw_{size}"
+        loader.create_schema_adult_census(table_name)
+        loader.truncate_table(table_name)
+        load_time = loader.load_csv_copy(f'data/processed/adult_{size}.csv', table_name)
+        print(f"Loaded {table_name} in {load_time:.2f}s")
 
-    for size in [100_000, 1_000_000, 5_000_000]:
+    for size in [100_000, 1_000_000]:
         table_name = f"healthcare_raw_{size}"
         loader.create_schema_healthcare_census(table_name)
         loader.truncate_table(table_name)

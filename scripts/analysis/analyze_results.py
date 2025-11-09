@@ -54,11 +54,9 @@ def plot_latency_comparison(df_results):
         aggfunc='mean'
     )
     
-    # Reorder systems
     system_order = ['raw', 'view', 'static', 'dynamic']
     pivot = pivot[[col for col in system_order if col in pivot.columns]]
     
-    # Plot
     ax = pivot.plot(kind='bar', width=0.8, figsize=(12, 6))
     ax.set_xlabel('Workload Type', fontsize=12, fontweight='bold')
     ax.set_ylabel('Median Latency (ms)', fontsize=12, fontweight='bold')

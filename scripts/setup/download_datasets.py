@@ -50,4 +50,4 @@ if __name__ == '__main__':
     os.makedirs('data/raw', exist_ok=True)
     download_adult_census()
     download_healthcare()
-    generate_high_cardinality_synthetic()
+    # generate_high_cardinality_synthetic()
