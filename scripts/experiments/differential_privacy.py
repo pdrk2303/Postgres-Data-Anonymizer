@@ -17,25 +17,12 @@ DB_CONFIG = {
 }
 
 def laplace_mechanism(true_value, sensitivity, epsilon):
-    """
-    Add Laplace noise for differential privacy
-    
-    Args:
-        true_value: True aggregate value
-        sensitivity: Global sensitivity of query (max change from adding/removing one row)
-        epsilon: Privacy parameter (lower = more privacy, more noise)
-    
-    Returns:
-        Noised value
-    """
     scale = sensitivity / epsilon
     noise = np.random.laplace(0, scale)
     return true_value + noise
 
 def run_dp_aggregate_queries(conn, epsilon_values):
     """
-    Run aggregate queries with DP noise injection
-    
     Queries tested:
     1. COUNT(*) by age bucket
     2. AVG(capital_gain) by education
@@ -188,4 +175,5 @@ def main():
         print(f"{r['query']:<30} {r['epsilon']:<8} {r['mae']:<12.2f} {r['relative_error']*100:<12.1f}%")
 
 if __name__ == '__main__':
+
     main()
