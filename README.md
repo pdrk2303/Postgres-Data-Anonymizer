@@ -91,9 +91,9 @@ postgres-anon-benchmark/
 │       ├── differential_privacy.py     # DP simulation
 │       └── reidentification_attack.py
 │   ├── analysis
-|       ├── analyze_query_plans.py      # Main benchmark runner
-│       ├── analyze_results.py          # k-anonymity implementation
-│       ├── compare_masking_functions.py     # DP simulation
+|       ├── analyze_query_plans.py      # # Main analysis script
+│       ├── analyze_results.py          # Calculates masking functions overhead
+│       ├── compare_masking_functions.py     
 ├── data/raw                            # Datasets 
 │   ├── adult.csv
 │   └── healthcare_dataset.csv
